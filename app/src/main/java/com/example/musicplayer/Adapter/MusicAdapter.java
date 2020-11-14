@@ -58,10 +58,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isStarted)
+                createMediaPlayer(mMusicNameList.get(position));
+                if (!isStarted){
                     mMediaPlayer.start();
-                else
-                    mMediaPlayer.pause();
+                    isStarted=true;
+                }else
+                    mMediaPlayer.stop();
             }
         });
     }
@@ -105,7 +107,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(String path) {
             mMusicTitle.setText(getMusicName(path));
-            createMediaPlayer(path);
         }
 
         private String getMusicName(String path) {
