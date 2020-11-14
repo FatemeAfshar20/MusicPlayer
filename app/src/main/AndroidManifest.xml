@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicPlayer">
         <activity android:name=".Controller.Activity.PagerActivity"></activity>
-        <activity android:name=".Controller.Activity.MainActivity">
+        <activity android:name=".Controller.Activity.MusicActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

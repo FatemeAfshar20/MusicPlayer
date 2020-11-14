@@ -12,23 +12,26 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.R;
 
 
-public class SongsFragment extends Fragment {
+public class MusicsFragment extends Fragment {
+    private RecyclerView mRecyclerView;
+
     public static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
     public static final int PERMISSION_COUNT = 1;
     public static final int REQUEST_PERMISSIONS = randomNumber(100, 500);
 
-    public SongsFragment() {
+    public MusicsFragment() {
         // Required empty public constructor
     }
 
-    public static SongsFragment newInstance() {
-        SongsFragment fragment = new SongsFragment();
+    public static MusicsFragment newInstance() {
+        MusicsFragment fragment = new MusicsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -43,7 +46,16 @@ public class SongsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_songs, container, false);
+        View view= inflater.inflate(
+                R.layout.recycler_view,
+                container,
+                false);
+        findViews(view);
+        return view;
+    }
+
+    private void findViews(View view) {
+        mRecyclerView=view.findViewById(R.id.recycler_view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

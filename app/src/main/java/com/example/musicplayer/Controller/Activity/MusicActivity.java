@@ -5,20 +5,20 @@ import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.musicplayer.Controller.Fragment.SongsFragment;
+import com.example.musicplayer.Controller.Fragment.MusicsFragment;
 import com.example.musicplayer.SingleFragmentActivity;
 
-public class MainActivity extends SingleFragmentActivity {
+public class MusicActivity extends SingleFragmentActivity {
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, MainActivity.class);
+        Intent starter = new Intent(context, MusicActivity.class);
         //starter.putExtra();
         context.startActivity(starter);
     }
 
     @Override
     public Fragment getFragment() {
-        return SongsFragment.newInstance();
+        return MusicsFragment.newInstance();
     }
 
 }
