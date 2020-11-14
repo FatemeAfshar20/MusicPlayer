@@ -2,11 +2,15 @@ package com.example.musicplayer.Adapter;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -88,6 +92,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
     class Holder extends RecyclerView.ViewHolder {
         private TextView mMusicTitle;
+        private ImageView mImgCover;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -102,11 +107,28 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
         private void findViews(@NonNull View itemView) {
             mMusicTitle = itemView.findViewById(R.id.music_name);
+            mImgCover=itemView.findViewById(R.id.img_cover);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(String path) {
             mMusicTitle.setText(getMusicName(path));
+            setImgMusicCover(path);
+        }
+
+        private void setImgMusicCover(String path) {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(path);
+            try {
+                byte[] art = retriever.getEmbeddedPicture();
+                Bitmap songImage = BitmapFactory
+                        .decodeByteArray(art, 0, art.length);
+                mImgCover.setImageBitmap(songImage);
+            }catch (Exception e){
+                mImgCover.setImageDrawable(mContext.
+                        getResources().
+                        getDrawable(R.drawable.download));
+            }
         }
 
         private String getMusicName(String path) {
