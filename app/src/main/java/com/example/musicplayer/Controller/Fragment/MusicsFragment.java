@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +13,28 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.musicplayer.Adapter.MusicAdapter;
 import com.example.musicplayer.R;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MusicsFragment extends Fragment {
-    private RecyclerView mRecyclerView;
-
     public static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
     public static final int PERMISSION_COUNT = 1;
     public static final int REQUEST_PERMISSIONS = randomNumber(100, 500);
+
+    private RecyclerView mRecyclerView;
+
+    private MusicAdapter mMusicAdapter;
+    private List<String> mMusicNameList = new ArrayList<>();
 
     public MusicsFragment() {
         // Required empty public constructor
@@ -76,6 +86,11 @@ public class MusicsFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && arePermissionDenied()) {
             requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
             return;
+        }else {
+            if (mMusicNameList.size()==0) {
+                fillMusicList();
+                setupAdapter();
+            }
         }
     }
 
@@ -86,6 +101,42 @@ public class MusicsFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+
+    private void setupAdapter() {
+        mMusicAdapter=new MusicAdapter(getContext());
+        mMusicAdapter.setMusicNameList(mMusicNameList);
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mMusicAdapter);
+    }
+
+    private List<String> addMusicFilesFrom(String path) {
+        List<String> musicNames = new ArrayList<>();
+        File musicDir = new File(path);
+
+        if (musicDir.exists()) {
+            File[] files = musicDir.listFiles();
+
+            for (File file : files) {
+                String musicPath = file.getAbsolutePath();
+                if (musicPath.endsWith(".mp3"))
+                    musicNames.add(musicPath);
+            }
+        }
+        return musicNames;
+    }
+
+    private void fillMusicList() {
+        mMusicNameList.addAll(addMusicFilesFrom
+                (String.valueOf(Environment.
+                        getExternalStoragePublicDirectory
+                                (Environment.DIRECTORY_MUSIC))));
+
+        mMusicNameList.addAll(addMusicFilesFrom
+                (String.valueOf(Environment.
+                        getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_DOWNLOADS))));
     }
 
     public static int randomNumber(int min, int max) {
