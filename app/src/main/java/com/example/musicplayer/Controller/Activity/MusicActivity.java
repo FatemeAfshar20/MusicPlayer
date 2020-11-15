@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 import com.example.musicplayer.Controller.Fragment.MusicsFragment;
+import com.example.musicplayer.Controller.Fragment.PagerFragment;
 import com.example.musicplayer.SingleFragmentActivity;
 
 public class MusicActivity extends SingleFragmentActivity {
@@ -18,7 +19,7 @@ public class MusicActivity extends SingleFragmentActivity {
 
     @Override
     public Fragment getFragment() {
-        return MusicsFragment.newInstance();
+        return PagerFragment.newInstance();
     }
 
 }

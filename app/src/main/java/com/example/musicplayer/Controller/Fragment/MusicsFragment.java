@@ -30,6 +30,7 @@ public class MusicsFragment extends Fragment {
     };
     public static final int PERMISSION_COUNT = 1;
     public static final int REQUEST_PERMISSIONS = randomNumber(100, 500);
+    public static final String ARGS_PAGE_NAME = "Page Name";
 
     private RecyclerView mRecyclerView;
 
@@ -40,9 +41,10 @@ public class MusicsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MusicsFragment newInstance() {
+    public static MusicsFragment newInstance(String pageName) {
         MusicsFragment fragment = new MusicsFragment();
         Bundle args = new Bundle();
+        args.putString(ARGS_PAGE_NAME,pageName);
         fragment.setArguments(args);
         return fragment;
     }
