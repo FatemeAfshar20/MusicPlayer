@@ -25,6 +25,7 @@ import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
     private final List<String> mMusicNameList = new ArrayList<>();
+    private final List<String> mMusicSingerList = new ArrayList<>();
     private Context mContext;
     private MediaPlayer mMediaPlayer;
     private boolean isStarted = false;

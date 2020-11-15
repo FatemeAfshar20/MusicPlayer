@@ -11,11 +11,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.musicplayer.Adapter.MusicPagerAdapter;
 import com.example.musicplayer.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class PagerFragment extends Fragment {
     private ViewPager2 mViewPager2;
     private TabLayout mTabLayout;
 
+    private String[] mPageName=new String[]{"Singers","Albums","Songs"};
     public PagerFragment() {
         // Required empty public constructor
     }
@@ -58,21 +60,8 @@ public class PagerFragment extends Fragment {
     }
 
     private void setupTabLayout() {
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mViewPager2.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        new TabLayoutMediator(mTabLayout, mViewPager2,
+                (tab, position) -> tab.setText(mPageName[position])
+        ).attach();
     }
 }

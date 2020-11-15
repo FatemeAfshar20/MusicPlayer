@@ -9,14 +9,17 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.musicplayer.Adapter.MusicAdapter;
+import com.example.musicplayer.Adapter.SingersAdapter;
 import com.example.musicplayer.R;
 
 import java.io.File;
@@ -35,7 +38,10 @@ public class MusicsFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
     private MusicAdapter mMusicAdapter;
+    private SingersAdapter mSingersAdapter;
     private List<String> mMusicNameList = new ArrayList<>();
+
+    private String mPage;
 
     public MusicsFragment() {
         // Required empty public constructor
@@ -85,13 +91,23 @@ public class MusicsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mPage=
+                getArguments().getString(ARGS_PAGE_NAME);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && arePermissionDenied()) {
             requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
             return;
         }else {
-            if (mMusicNameList.size()==0) {
+            if (mMusicNameList.size()==0)
                 fillMusicList();
-                setupAdapter();
+            switch (mPage) {
+                case "Songs":
+                    setupMusicAdapter();
+                    break;
+                case "Singers":
+                    setupSingersAdapter();
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -105,12 +121,20 @@ public class MusicsFragment extends Fragment {
         return false;
     }
 
-    private void setupAdapter() {
+    private void setupMusicAdapter() {
         mMusicAdapter=new MusicAdapter(getContext());
         mMusicAdapter.setMusicNameList(mMusicNameList);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mMusicAdapter);
+    }
+
+    private void setupSingersAdapter() {
+        mSingersAdapter=new SingersAdapter(getContext());
+        mSingersAdapter.setSingerNames(mMusicNameList);
+        mRecyclerView.setLayoutManager(
+                new GridLayoutManager(getContext(),2));
+        mRecyclerView.setAdapter(mSingersAdapter);
     }
 
     private List<String> addMusicFilesFrom(String path) {

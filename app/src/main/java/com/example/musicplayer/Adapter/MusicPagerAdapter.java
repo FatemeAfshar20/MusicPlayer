@@ -20,9 +20,9 @@ public class MusicPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return MusicsFragment.newInstance("Albums");
+                return MusicsFragment.newInstance("Singers");
             case 1:
-               return MusicsFragment.newInstance("Singers");
+               return MusicsFragment.newInstance("Albums");
             case 2:
                 return MusicsFragment.newInstance("Songs");
             default:
